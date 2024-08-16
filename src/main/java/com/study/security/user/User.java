@@ -1,10 +1,7 @@
 package com.study.security.user;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +9,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
+@Getter
+@Setter
+@EqualsAndHashCode
 @Data
 @Builder
 @NoArgsConstructor
@@ -29,8 +29,26 @@ public class User implements UserDetails {
     private String lastName;
     private String email;
     private String password;
+    private Boolean locked;
+    private Boolean enabled;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    public User(String firstName,
+                String lastName,
+                String email,
+                String password,
+                Boolean locked,
+                Boolean enabled,
+                Role role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.locked = locked;
+        this.enabled = enabled;
+        this.role = role;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -54,7 +72,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !locked;
     }
 
     @Override
@@ -64,6 +82,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 }
