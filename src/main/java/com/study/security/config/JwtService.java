@@ -69,7 +69,7 @@ public class JwtService {
             return Jwts.parser()
                     .verifyWith(getKey())
                     .build()
-                    .parseEncryptedClaims(token)
+                    .parseSignedClaims(token)
                     .getPayload();
         } catch (Exception e) {
             throw new RuntimeException("Invalid JWT token", e);
