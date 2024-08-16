@@ -15,6 +15,17 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public void enableUser(String email) {
+        Optional<User> user = findUserByEmail(email);
+
+        if(user.isPresent()) {
+            user.ifPresent(u -> {
+                u.setEnabled(true);
+                userRepository.save(u);
+            });
+        }
+    }
+
     public Optional<User> findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
